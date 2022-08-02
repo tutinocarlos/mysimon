@@ -126,15 +126,12 @@ void setup()
 
   strip.fill(strip.Color(0, 0, 255, 40), 0, 48);
   strip.show();
-  delay(250);
   apagar();
   encenderTodo();
   delay(750);
   apagar();
-  encenderTodo();
-  delay(750);
-  apagar();
-  Serial.println("setup");
+
+  Serial.println("setusp");
 
 }
 
@@ -159,52 +156,43 @@ void espera_pulsacion_inicio()
   // esperamos hasta que pulsen el boton de inico de nueva partida
   while (ronda == 0)
   {
-     activarSegmento(2);
-
-    for (int i = 2; i <= 5; i++) {
-    if (digitalRead(PIN_BOTON_ROJO) == LOW)
-    {
-      apagar();
-      ronda = 1;
-    };
-      activarSegmento(i);
-
-    }
-
-
-    // delay(500); // Pause 1/2 second
-    for (int i = 6; i >= 2; i--) {
-      if (digitalRead(PIN_BOTON_ROJO) == LOW)
-    {
-      apagar();
-      ronda = 1;
-    };
-      activarSegmento(i);
-    }
+    activarSegmento(2, 1);
 
     if (digitalRead(PIN_BOTON_ROJO) == LOW)
     {
-      apagar();
-      inicio();
       ronda = 1;
-      delay(5000);
+      strip.fill(strip.Color(255, 255, 255, 255), 0, 48);
+      strip.show();
+      delay(500);
+
     };
-    apagar();
+
   }
 }
 
 void reproduce_melodia(int notas[], int duracion[], int tempo, int nro_notas)
 {
+
+
   /* notas = array con las notas (frecuencias o notas pre-definidas)
      duracion = array con la duracin de cada nota del array notas[] son el factor multiplicador del tempo, es decir si queremos que dure un pulso de tempo, indicaremos 1 o T_NEGRA
      tempo = duracin de un pulso (una nota negra) en milisegundos
      nro_notas = numero de notas que compone el array notas[]
   */
+  switch (nro_notas) {
+    case 4:
+      strip.fill(strip.Color(255, 0, 0, 255), 0, 48);
+      strip.show();
+      break;
+    case 6:
+      strip.fill(strip.Color(0, 255, 0, 255), 0, 48);
+      strip.show();
+      break;
+  }
   int x = 0;
 
   for (x = 0; x < nro_notas; x++)
   {
-
     tone(PIN_ZUMBADOR, notas[x], duracion[x] * tempo);
     delay(duracion[x] * tempo * 1.30);
   }
@@ -213,12 +201,11 @@ void reproduce_melodia(int notas[], int duracion[], int tempo, int nro_notas)
 void reproduce_nota_led(byte led, int tiempo)
 {
   int nota[] = {NOTA_C4, NOTA_D4, NOTA_E4, NOTA_F4};
-  Serial.println("led");
-  Serial.println(led);
-  activarSegmento(led);
+
+  activarSegmento(led, 1);
   tone(PIN_ZUMBADOR, nota[led - 2], tiempo); // HACEMOS nota[led - 2] por que en led pasamos el pin del led que toque encender y estos empiezan en el pin 2
   delay(tiempo);
-  strip.clear();                           // hacemos delay para que el led permanezca encendido mientras suena la nota
+  apagar();                           // hacemos delay para que el led permanezca encendido mientras suena la nota
 }
 
 void tema_inicio()
@@ -237,34 +224,11 @@ void tema_game_over()
   int notas[] = {NOTA_D4, NOTA_C4S, NOTA_C4, NOTA_B3};
   int duracion[] = {T_NEGRA, T_NEGRA, T_NEGRA, T_REDONDA};
   reproduce_melodia(notas, duracion, 300, 4);
+
 }
 
 void flash_bienvenida()
 {
-  // Hacemos una secuencia de luces de inicio de partida
-  for (byte x = 2; x <= 5; x++)
-  {
-    digitalWrite(x, HIGH);
-    delay(100);
-  }
-  for (byte x = 5; x >= 2; x--)
-  {
-    digitalWrite(x, LOW);
-    delay(100);
-  }
-  for (byte y = 1; y <= 3; y++)
-  {
-    for (byte x = 2; x <= 5; x++)
-    {
-      digitalWrite(x, HIGH);
-    }
-    delay(333);
-    for (byte x = 5; x >= 2; x--)
-    {
-      digitalWrite(x, LOW);
-    }
-  }
-  // y Sunena la meloda de inicio
   tema_inicio();
   delay(1000);
 }
@@ -278,30 +242,22 @@ void flash_respuesta_correcta()
 void flash_respuesta_incorrecta()
 {
   // Suena la meloda game over con los 4 leds encendidos
-  Serial.println("error");
-    error();
-  delay(500);
 
   tema_game_over();
-  for (byte x = 5; x >= 2; x--)
-  {
-    digitalWrite(x, LOW);
-  }
+
   delay(1000);
 }
 
 void genera_secuencia()
 {
-
   // Generamos el sigeuinte elemento de la secuncia y la reproducimos
   randomSeed(analogRead(A0) * 0.785478545); // generamos una semilla para generar el nmero aleatorio
-   secuencia[ronda] = random(2,6); // generamos un numero aleatorio entre 2 y 5 que son lospines dondea estn los leds
+  secuencia[ronda] = random(2, 6); // generamos un numero aleatorio entre 2 y 5 que son lospines dondea estn los leds
   for (int x = 1; x <= ronda; x++) // reproducimos la secuencia
   {
-
     reproduce_nota_led(secuencia[x], velocidad);
-    apagar();
-    // delay(velocidad);
+    //    apagar();
+    //     delay(velocidad);
     delay(100 * velocidad / VELOCIDAD_INICIAL);
   }
 }
@@ -378,7 +334,7 @@ void lee_respuesta()
   }
   else
   { // si correcto == false es que se ha fallado
-  
+
     flash_respuesta_incorrecta();
     ronda = 0; // ponemos ronda a 0 para volver a esperar que inicien una nueva partida
     velocidad = VELOCIDAD_INICIAL;

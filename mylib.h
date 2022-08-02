@@ -3,8 +3,6 @@ void apagar() {
 
   strip.clear();
   strip.show();
-  // return;
-
 }
 void segmento(uint32_t color, int desde, int hasta, int wait) {
 
@@ -18,13 +16,13 @@ void segmento(uint32_t color, int desde, int hasta, int wait) {
 
 }
 void error() {
- segmento(strip.Color(255,0,0,255),0, 48,10); 
+ segmento(strip.Color(255,0,0,255),0, 48,1); 
 
 }
 void inicio() {
- segmento(strip.Color(0,255,0, 255),0, 48, 10);
+ segmento(strip.Color(0,255,0, 255),0, 48, DEFAULT_DELAY);
  strip.show();
- Serial.println("inicio");
+
 }
 void encenderTodo(){
   segmento(strip.Color(255,0,0,255),0, 11, DEFAULT_DELAY); 
@@ -34,63 +32,59 @@ void encenderTodo(){
 
 }
 
-void activarSegmento(int led) {
-  Serial.println("**");
-  Serial.println(led);
-  Serial.println("**");
-//strip.clear();
+void activarSegmento(int led, int speed) {
+
   switch (led) {
     case 2:
    
-      segmento(strip.Color(  255, 0,   0, 255), 0, 11, DEFAULT_DELAY); // True white (not RGB white)
+      segmento(strip.Color(  255, 0,   0, 255), 0, 11, speed); // True white (not RGB white)
+      segmento(strip.Color(0, 0,   0, 0), 12, 23, speed); // True white (not RGB white)
+      segmento(strip.Color(  0,   0,   0, 0), 24, 35, speed); // True white (not RGB white)
+      segmento(strip.Color(  0,   0,   0, 0), 36, 48, speed); // True white (not RGB white)
+      break;
+    case 3:
+      segmento(strip.Color(  0,   0,   0, 0), 0, 11, speed); // True white (not RGB white)
+      segmento(strip.Color(  0,  0,   255, 255), 12, 23, speed); // True white (not RGB white)
+      segmento(strip.Color(  0,   0,   0, 255), 24, 35, speed); // True white (not RGB white)
+      segmento(strip.Color(  0,   0,   0, 255), 36, 48, speed); // True white (not RGB white)
+      break;
+    case 4:
+      segmento(strip.Color(  0,   0,   0, 0), 0, 11, speed); // True white (not RGB white)
+      segmento(strip.Color(  0,   0,   0, 0), 12, 23, speed); // True white (not RGB white)
+      segmento(strip.Color(  255,   255,0, 255), 24, 35, speed); // True white (not RGB white)
+      segmento(strip.Color(  0,   0,   0, 0), 36, 48, speed); // True white (not RGB white)
+      break;
+    case 5:
+      segmento(strip.Color(  0,   0,   0, 0), 0, 11, speed); // True white (not RGB white)
+      segmento(strip.Color(  0,   0,   0, 0), 12, 23, speed); // True white (not RGB white)
+      segmento(strip.Color(  0,   0,   0, 0), 24, 35, speed); // True white (not RGB white)
+      segmento(strip.Color(  0,   255,   0, 255), 36, 48, speed); // True white (not RGB white)
+      break;
+
+  }
+}void pintarSegmento(int led) {
+
+
+  switch (led) {
+    case 2:
+   segmento(strip.Color(  255, 0,   0, 255), 0, 11, DEFAULT_DELAY); // True white (not RGB white)
       segmento(strip.Color(0, 0,   0, 0), 12, 23, DEFAULT_DELAY); // True white (not RGB white)
       segmento(strip.Color(  0,   0,   0, 0), 24, 35, DEFAULT_DELAY); // True white (not RGB white)
       segmento(strip.Color(  0,   0,   0, 0), 36, 48, DEFAULT_DELAY); // True white (not RGB white)
       break;
     case 3:
-      segmento(strip.Color(  0,   0,   0, 0), 0, 11, DEFAULT_DELAY); // True white (not RGB white)
-      segmento(strip.Color(  0,  0,   255, 255), 12, 23, DEFAULT_DELAY); // True white (not RGB white)
-      segmento(strip.Color(  0,   0,   0, 255), 24, 35, DEFAULT_DELAY); // True white (not RGB white)
-      segmento(strip.Color(  0,   0,   0, 255), 36, 48, DEFAULT_DELAY); // True white (not RGB white)
-      break;
-    case 4:
-      segmento(strip.Color(  0,   0,   0, 0), 0, 11, DEFAULT_DELAY); // True white (not RGB white)
-      segmento(strip.Color(  0,   0,   0, 0), 12, 23, DEFAULT_DELAY); // True white (not RGB white)
-      segmento(strip.Color(  255,   255,0, 255), 24, 35, DEFAULT_DELAY); // True white (not RGB white)
-      segmento(strip.Color(  0,   0,   0, 0), 36, 48, DEFAULT_DELAY); // True white (not RGB white)
-      break;
-    case 5:
-      segmento(strip.Color(  0,   0,   0, 0), 0, 11, DEFAULT_DELAY); // True white (not RGB white)
-      segmento(strip.Color(  0,   0,   0, 0), 12, 23, DEFAULT_DELAY); // True white (not RGB white)
-      segmento(strip.Color(  0,   0,   0, 0), 24, 35, DEFAULT_DELAY); // True white (not RGB white)
-      segmento(strip.Color(  0,   255,   0, 255), 36, 48, DEFAULT_DELAY); // True white (not RGB white)
-      break;
-
-  }
-}void pintarSegmento(int led) {
-   if (digitalRead(PIN_BOTON_ROJO) == LOW)
-    {
-      apagar();
-      ronda = 1;
-      delay(50);
-    };
-  Serial.println("**");
-  Serial.println(led);
-  Serial.println("**");
-
-  switch (led) {
-    case 2:
-   
-      segmento(strip.Color(  255, 0,   0, 255), 0, 11, DEFAULT_DELAY); // True white (not RGB white)
-      segmento(strip.Color(  255, 255,   255, 255), 12, 48, DEFAULT_DELAY); // True white (not RGB white)
-      break;
-    case 3:
+     segmento(strip.Color(  255, 0,   0, 255), 0, 11, DEFAULT_DELAY); // True white (not RGB white)
       segmento(strip.Color(  255,  0,   255, 255), 12, 23, DEFAULT_DELAY); // True white (not RGB white)
+       segmento(strip.Color(  255, 0,   0, 255), 24, 48, DEFAULT_DELAY); // True white (not RGB white)
       break;
     case 4:
+    segmento(strip.Color(  255, 0,   0, 255), 0, 23, DEFAULT_DELAY); // True white (not RGB white)
       segmento(strip.Color(  255,   255,0, 255), 24, 35, DEFAULT_DELAY); // True white (not RGB white)
+      segmento(strip.Color(  255, 0,   0, 255), 36, 48, DEFAULT_DELAY); // True white (not RGB white)
+      
       break;
     case 5:
+     segmento(strip.Color(  255, 0,   0, 255), 0, 35, DEFAULT_DELAY); // True white (not RGB white)
       segmento(strip.Color(  0,   255,   0, 255), 36, 48, DEFAULT_DELAY); // True white (not RGB white)
       break;
 
