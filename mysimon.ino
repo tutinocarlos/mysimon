@@ -128,7 +128,7 @@ void setup()
   strip.show();
   apagar();
   encenderTodo();
-  delay(750);
+  delay(200);
   apagar();
 
 
@@ -158,15 +158,15 @@ void espera_pulsacion_inicio()
 
   while (ronda == 0)
   {
-    activarSegmento(2, 1);
+//    activarSegmento(2, 1);
     //    strip.fill(strip.Color(255, 0, 0, 255), 0, 11);
     //    strip.fill(strip.Color(255, 255, 255, 255), 12, 48);
-    strip.show();
-
-    delay(500);
-    apagar();
+//    strip.show();
+//
+//    delay(500);
+//    apagar();
     encenderTodo();
-    if (digitalRead(PIN_BOTON_ROJO) == LOW)
+    if (digitalRead(PIN_BOTON_ROJO) == LOW || digitalRead(PIN_BOTON_VERDE) == LOW || digitalRead(PIN_BOTON_AMARILLO) == LOW || digitalRead(PIN_BOTON_AZUL) == LOW)
     {
       strip.fill(strip.Color(0, 255, 0, 255), 0, 48);
       strip.show();
@@ -189,16 +189,7 @@ void reproduce_melodia(int notas[], int duracion[], int tempo, int nro_notas, in
      tempo = duracin de un pulso (una nota negra) en milisegundos
      nro_notas = numero de notas que compone el array notas[]
   */
-  //  switch (nro_notas) {
-  //    case 4:
-  //      strip.fill(strip.Color(255, 0, 0, 255), 0, 48);
-  //      strip.show();
-  //      break;
-  //    case 6:
-  //      strip.fill(strip.Color(0, 255, 0, 255), 0, 48);
-  //      strip.show();
-  //      break;
-  //  }
+
   int x = 0;
 
   for (x = 0; x < nro_notas; x++)
