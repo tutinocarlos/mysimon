@@ -155,19 +155,28 @@ void loop()
 void espera_pulsacion_inicio()
 {
   // esperamos hasta que pulsen el boton de inico de nueva partida
+
   while (ronda == 0)
   {
     activarSegmento(2, 1);
+    //    strip.fill(strip.Color(255, 0, 0, 255), 0, 11);
+    //    strip.fill(strip.Color(255, 255, 255, 255), 12, 48);
+    strip.show();
 
+    delay(500);
+    apagar();
+    encenderTodo();
     if (digitalRead(PIN_BOTON_ROJO) == LOW)
     {
-      ronda = 1;
-      strip.fill(strip.Color(255, 255, 255, 255), 0, 48);
+      strip.fill(strip.Color(0, 255, 0, 255), 0, 48);
       strip.show();
+      delay(300);
       apagar();
+      ronda = 1;
+
 
     };
-
+    //    delay(1000);
   }
 }
 
@@ -259,10 +268,11 @@ void flash_respuesta_correcta()
 void flash_respuesta_incorrecta()
 {
   // Suena la meloda game over con los 4 leds encendidos
-
   tema_game_over(1);//paso 1 para marcar error
+  encenderTodo();
+  tema_inicio();
 
-  delay(1000);
+  delay(500);
 }
 
 void genera_secuencia()
@@ -355,6 +365,7 @@ void lee_respuesta()
 
       ronda = 0;
       velocidad = VELOCIDAD_INICIAL;
+
       espera_pulsacion_inicio();
 
     }
@@ -373,6 +384,7 @@ void lee_respuesta()
   { // si correcto == false es que se ha fallado
 
     flash_respuesta_incorrecta();
+
     ronda = 0; // ponemos ronda a 0 para volver a esperar que inicien una nueva partida
     velocidad = VELOCIDAD_INICIAL;
     espera_pulsacion_inicio();
