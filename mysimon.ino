@@ -54,7 +54,7 @@ const byte PIN_ZUMBADOR = 11;
 
 const byte MAX_RONDAS = 255; // el nmero mximo de rondas ser de 255
 
-const int VELOCIDAD_INICIAL = 1000; // velocidad inicial en milisegundos a la que se mostrar la secuencia
+const int VELOCIDAD_INICIAL = 500; // velocidad inicial en milisegundos a la que se mostrar la secuencia
 
 byte ronda = 0;                    // numero de ronda en la que vamos
 byte secuencia[MAX_RONDAS + 1];    // array para alojar la secuencia que se va generando. El array empieza en el elemento 0 pero no lo usamos, empezamos en el 1 para hacer coincidir con el nmero de ronda
@@ -131,8 +131,9 @@ void setup()
   delay(750);
   apagar();
 
-  Serial.println("setusp");
 
+
+  encenderTodo();
 }
 
 void loop()
@@ -163,14 +164,14 @@ void espera_pulsacion_inicio()
       ronda = 1;
       strip.fill(strip.Color(255, 255, 255, 255), 0, 48);
       strip.show();
-      delay(500);
+      apagar();
 
     };
 
   }
 }
 
-void reproduce_melodia(int notas[], int duracion[], int tempo, int nro_notas)
+void reproduce_melodia(int notas[], int duracion[], int tempo, int nro_notas, int error = 0)
 {
 
 
@@ -179,23 +180,39 @@ void reproduce_melodia(int notas[], int duracion[], int tempo, int nro_notas)
      tempo = duracin de un pulso (una nota negra) en milisegundos
      nro_notas = numero de notas que compone el array notas[]
   */
-  switch (nro_notas) {
-    case 4:
-      strip.fill(strip.Color(255, 0, 0, 255), 0, 48);
-      strip.show();
-      break;
-    case 6:
-      strip.fill(strip.Color(0, 255, 0, 255), 0, 48);
-      strip.show();
-      break;
-  }
+  //  switch (nro_notas) {
+  //    case 4:
+  //      strip.fill(strip.Color(255, 0, 0, 255), 0, 48);
+  //      strip.show();
+  //      break;
+  //    case 6:
+  //      strip.fill(strip.Color(0, 255, 0, 255), 0, 48);
+  //      strip.show();
+  //      break;
+  //  }
   int x = 0;
 
   for (x = 0; x < nro_notas; x++)
   {
+
+    switch (error) {
+      case 1:
+
+        strip.fill(strip.Color(255, 0, 0, 255), 0, 48);
+        strip.show();
+        activarSegmentoError(x + 2, 1);
+
+        tone(PIN_ZUMBADOR, notas[x], duracion[x] * tempo);
+
+        break;
+      default:
+        tone(PIN_ZUMBADOR, notas[x], duracion[x] * tempo);
+
+    }
     tone(PIN_ZUMBADOR, notas[x], duracion[x] * tempo);
     delay(duracion[x] * tempo * 1.30);
   }
+
 }
 
 void reproduce_nota_led(byte led, int tiempo)
@@ -218,12 +235,12 @@ void tema_inicio()
   reproduce_melodia(notas, duracion, 100, 6);
 }
 
-void tema_game_over()
+void tema_game_over(int error)
 {
   // meloda que suena al perder la partida
   int notas[] = {NOTA_D4, NOTA_C4S, NOTA_C4, NOTA_B3};
   int duracion[] = {T_NEGRA, T_NEGRA, T_NEGRA, T_REDONDA};
-  reproduce_melodia(notas, duracion, 300, 4);
+  reproduce_melodia(notas, duracion, 300, 4, error);
 
 }
 
@@ -243,7 +260,7 @@ void flash_respuesta_incorrecta()
 {
   // Suena la meloda game over con los 4 leds encendidos
 
-  tema_game_over();
+  tema_game_over(1);//paso 1 para marcar error
 
   delay(1000);
 }
@@ -324,13 +341,33 @@ void lee_respuesta()
 
   if (correcto == true)
   { // si correcto es que se ha acertado toda la secuencia
-    delay(500);
-    flash_respuesta_correcta();
     ronda++; // incrementamos una ronda
+    if (ronda == MAX_RONDAS) {
+      Serial.println("gano");
+      segmento(strip.Color(  0,   255,   0, 255), 0, 48, 2); // True white (not RGB white)
+
+      delay(500);
+      apagar();
+      delay(500);
+      segmento(strip.Color(  0,   255,   0, 255), 0, 48, 2); // True white (not RGB white)
+
+      tema_inicio();
+
+      ronda = 0;
+      velocidad = VELOCIDAD_INICIAL;
+      espera_pulsacion_inicio();
+
+    }
+    delay(100);
+    flash_respuesta_correcta();
+
+
     if (velocidad >= 50)
     {
       velocidad = velocidad - 50; // incrementamos la velocidad de muestra de la secuencia (10 milisegundos ms rpida)
     }
+
+
   }
   else
   { // si correcto == false es que se ha fallado

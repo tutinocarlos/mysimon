@@ -32,6 +32,33 @@ void encenderTodo(){
 
 }
 
+void activarSegmentoError(int led, int speed) {
+
+  switch (led) {
+    case 2:
+   
+      segmento(strip.Color(  255, 0,   0, 255), 0, 11, speed); // True white (not RGB white)
+      segmento(strip.Color(255, 255,   255,255), 12, 48, speed); // True white (not RGB white)
+     
+      break;
+    case 3:
+      segmento(strip.Color( 255,255,255,255), 0, 11, speed); // True white (not RGB white)
+      segmento(strip.Color(  255,  0,   0, 255), 12, 23, speed); // True white (not RGB white)
+      segmento(strip.Color(255,255,255,255), 24, 38, speed); // True white (not RGB white)
+      break;
+    case 4:
+      segmento(strip.Color(255,255,255,255), 0,23, speed); // True white (not RGB white)
+      segmento(strip.Color(  255,   0,0, 255), 24, 35, speed); // True white (not RGB white)
+      segmento(strip.Color(255,255,255,255), 36, 48, speed); // True white (not RGB white)
+      break;
+    case 5:
+     segmento(strip.Color(255,255,255,255), 0, 36, speed); // True white (not RGB white)
+      segmento(strip.Color(255,0,0, 255), 36, 48, speed); // True white (not RGB white)
+      break;
+
+  }
+}
+
 void activarSegmento(int led, int speed) {
 
   switch (led) {
@@ -62,7 +89,9 @@ void activarSegmento(int led, int speed) {
       break;
 
   }
-}void pintarSegmento(int led) {
+}
+
+void pintarSegmento(int led) {
 
 
   switch (led) {
