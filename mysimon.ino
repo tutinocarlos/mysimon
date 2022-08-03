@@ -166,10 +166,10 @@ void espera_pulsacion_inicio()
     //    strip.fill(strip.Color(255, 255, 255, 255), 12, 48);
 //    strip.show();
 //
-//    delay(1000);
+    delay(300);
 //    apagar(ronda);
-//    encenderTodo();
-       delay(500);
+    encenderTodo();
+       delay(300);
     if (digitalRead(PIN_BOTON_ROJO) == LOW || digitalRead(PIN_BOTON_VERDE) == LOW || digitalRead(PIN_BOTON_AMARILLO) == LOW || digitalRead(PIN_BOTON_AZUL) == LOW)
     {
       strip.fill(strip.Color(0, 255, 0, 255), 0, 48);
