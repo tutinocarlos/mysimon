@@ -158,14 +158,18 @@ void espera_pulsacion_inicio()
 
   while (ronda == 0)
   {
-//    activarSegmento(2, 1);
+        apagar();
+    randomSeed(analogRead(A0) * 0.785478545); // generamos una semilla para generar el nmero aleatorio
+
+    pintarSegmento(random(2, 6));
     //    strip.fill(strip.Color(255, 0, 0, 255), 0, 11);
     //    strip.fill(strip.Color(255, 255, 255, 255), 12, 48);
 //    strip.show();
 //
-//    delay(500);
-//    apagar();
-    encenderTodo();
+//    delay(1000);
+//    apagar(ronda);
+//    encenderTodo();
+       delay(500);
     if (digitalRead(PIN_BOTON_ROJO) == LOW || digitalRead(PIN_BOTON_VERDE) == LOW || digitalRead(PIN_BOTON_AMARILLO) == LOW || digitalRead(PIN_BOTON_AZUL) == LOW)
     {
       strip.fill(strip.Color(0, 255, 0, 255), 0, 48);

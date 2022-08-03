@@ -1,7 +1,12 @@
 
-void apagar() {
+void apagar(int ronda=1) {
 
-  strip.clear();
+if(ronda !=1 ){
+  strip.fill(strip.Color(255, 255, 255, 255), 0, 48);
+  }else{
+      strip.clear();
+    }
+ ;
   strip.show();
 }
 void segmento(uint32_t color, int desde, int hasta, int wait) {
@@ -97,23 +102,23 @@ void pintarSegmento(int led) {
   switch (led) {
     case 2:
    segmento(strip.Color(  255, 0,   0, 255), 0, 11, DEFAULT_DELAY); // True white (not RGB white)
-      segmento(strip.Color(0, 0,   0, 0), 12, 23, DEFAULT_DELAY); // True white (not RGB white)
-      segmento(strip.Color(  0,   0,   0, 0), 24, 35, DEFAULT_DELAY); // True white (not RGB white)
-      segmento(strip.Color(  0,   0,   0, 0), 36, 48, DEFAULT_DELAY); // True white (not RGB white)
+      segmento(strip.Color(255, 255,   255, 255), 12, 23, DEFAULT_DELAY); // True white (not RGB white)
+      segmento(strip.Color(  255, 255, 255,255), 24, 35, DEFAULT_DELAY); // True white (not RGB white)
+      segmento(strip.Color(  255,  255,255,255), 36, 48, DEFAULT_DELAY); // True white (not RGB white)
       break;
     case 3:
-     segmento(strip.Color(  255, 0,   0, 255), 0, 11, DEFAULT_DELAY); // True white (not RGB white)
-      segmento(strip.Color(  255,  0,   255, 255), 12, 23, DEFAULT_DELAY); // True white (not RGB white)
-       segmento(strip.Color(  255, 0,   0, 255), 24, 48, DEFAULT_DELAY); // True white (not RGB white)
+     segmento(strip.Color(  255,255,255, 255), 0, 11, DEFAULT_DELAY); // True white (not RGB white)
+      segmento(strip.Color(  0,0,255, 255), 12, 23, DEFAULT_DELAY); // True white (not RGB white)
+       segmento(strip.Color(  255, 255,255, 255), 24, 48, DEFAULT_DELAY); // True white (not RGB white)
       break;
     case 4:
-    segmento(strip.Color(  255, 0,   0, 255), 0, 23, DEFAULT_DELAY); // True white (not RGB white)
+    segmento(strip.Color(255,255,255, 255), 0, 23, DEFAULT_DELAY); // True white (not RGB white)
       segmento(strip.Color(  255,   255,0, 255), 24, 35, DEFAULT_DELAY); // True white (not RGB white)
-      segmento(strip.Color(  255, 0,   0, 255), 36, 48, DEFAULT_DELAY); // True white (not RGB white)
+      segmento(strip.Color(255,255,255, 255), 36, 48, DEFAULT_DELAY); // True white (not RGB white)
       
       break;
     case 5:
-     segmento(strip.Color(  255, 0,   0, 255), 0, 35, DEFAULT_DELAY); // True white (not RGB white)
+     segmento(strip.Color(  255,255,255, 255), 0, 35, DEFAULT_DELAY); // True white (not RGB white)
       segmento(strip.Color(  0,   255,   0, 255), 36, 48, DEFAULT_DELAY); // True white (not RGB white)
       break;
 
