@@ -187,6 +187,7 @@ void espera_pulsacion_inicio()
 void reproduce_melodia(int notas[], int duracion[], int tempo, int nro_notas, int error = 0)
 {
 
+Serial.println(error);
 
   /* notas = array con las notas (frecuencias o notas pre-definidas)
      duracion = array con la duracin de cada nota del array notas[] son el factor multiplicador del tempo, es decir si queremos que dure un pulso de tempo, indicaremos 1 o T_NEGRA
@@ -213,10 +214,22 @@ void reproduce_melodia(int notas[], int duracion[], int tempo, int nro_notas, in
         tone(PIN_ZUMBADOR, notas[x], duracion[x] * tempo);
 
     }
-    tone(PIN_ZUMBADOR, notas[x], duracion[x] * tempo);
-    delay(duracion[x] * tempo * 1.30);
-  }
 
+    delay(duracion[x] * tempo * 1.30);
+    
+    
+  }
+      switch (error) {
+      case 1:
+  for (x = 6; x >= 2; x--)
+  {
+  activarSegmento(x,1);
+  delay(100);
+  }
+    delay(500);
+  encenderTodo();
+
+      }
 }
 
 void reproduce_nota_led(byte led, int tiempo)
